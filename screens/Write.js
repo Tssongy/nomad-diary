@@ -60,7 +60,7 @@ const EmotionText = styled.Text`
 
 const emotions = ["🤯", "🥲", "🤬", "🤗", "🥰", "😊", "🤩"];
 
-const Write = ({ navigation: { goback } }) => {
+const Write = ({ navigation: { goBack } }) => {
   const realm = useDB();
   useEffect(() => {
     console.log("realm!", realm);
@@ -81,7 +81,7 @@ const Write = ({ navigation: { goback } }) => {
       });
       console.log("feeling: ", feeling);
     });
-    goback();
+    goBack();
   };
   console.log(feelings, selectedEmotion);
 
