@@ -10,6 +10,11 @@ import {
   Platform,
   UIManager,
 } from "react-native";
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from "react-native-google-mobile-ads";
 
 if (Platform.OS === "android") {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -17,17 +22,21 @@ if (Platform.OS === "android") {
   }
 }
 
+const adUnitId = TestIds.BANNER;
+
 const View = styled.View`
   flex: 1;
+  align-items: center;
   background-color: ${colors.bgColor};
-  padding: 0px 50px;
+  padding: 0px 30px;
   padding-top: 100px;
 `;
 
 const Title = styled.Text`
   color: ${colors.textColor};
   font-size: 38px;
-  margin-bottom: 100px;
+  font-weight: 500;
+  width: 100%;
 `;
 
 const Btn = styled.TouchableOpacity`
@@ -87,7 +96,15 @@ const Home = ({ navigation: { navigate } }) => {
   return (
     <View>
       <Title>My journal</Title>
+      <BannerAd
+        unitId={adUnitId}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: true,
+        }}
+      />
       <FlatList
+        style={{ marginVertical: 50, width: "100%" }}
         data={feelings}
         contentContainerStyle={{ paddingVertical: 10 }}
         keyExtractor={(feeling) => feeling._id + ""}

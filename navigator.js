@@ -7,7 +7,7 @@ const Tabs = createNativeStackNavigator();
 
 const Navigator = () => (
   <Tabs.Navigator screenOptions={{ headerShown: false, presentation: "modal" }}>
-    <Tabs.Screen name="Home" component={Home} />
+    <Tabs.Screen name="Home" component={Home} unitId />
     <Tabs.Screen name="Write" component={Write} />
   </Tabs.Navigator>
 );

@@ -3,6 +3,18 @@ import styled from "styled-components/native";
 import colors from "../colors";
 import { Alert } from "react-native";
 import { useDB } from "../context";
+import {
+  RewardedAd,
+  TestIds,
+  RewardedAdEventType,
+} from "react-native-google-mobile-ads";
+
+const adUnitId = TestIds.REWARDED;
+
+const rewarded = RewardedAd.createForAdRequest(adUnitId, {
+  requestNonPersonalizedAdsOnly: true,
+  keywords: ["fashion", "clothing"],
+});
 
 const View = styled.View`
   background-color: ${colors.bgColor};
@@ -62,11 +74,35 @@ const emotions = ["🤯", "🥲", "🤬", "🤗", "🥰", "😊", "🤩"];
 
 const Write = ({ navigation: { goBack } }) => {
   const realm = useDB();
-  useEffect(() => {
-    console.log("realm!", realm);
-  }, []);
+
   const [selectedEmotion, setEmotion] = useState(null);
   const [feelings, setFeelings] = useState("");
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    // const unsubscribeLoaded = rewarded.addAdEventListener(
+    //   RewardedAdEventType.LOADED,
+    //   () => {
+    //     setLoaded(true);
+    //   }
+    // );
+    // const unsubscribeEarned = rewarded.addAdEventListener(
+    //   RewardedAdEventType.EARNED_REWARD,
+    //   (reward) => {
+    //     console.log("User earned reward of ", reward);
+    //   }
+    // );
+
+    // Start loading the rewarded ad straight away
+    rewarded.load();
+
+    // Unsubscribe from events on unmount
+    // return () => {
+    //   unsubscribeLoaded();
+    //   unsubscribeEarned();
+    // };
+  }, []);
+
   const onChangeText = (text) => setFeelings(text);
   const onEmotionPress = (face) => setEmotion(face);
   const onSubmit = () => {
@@ -79,8 +115,8 @@ const Write = ({ navigation: { goBack } }) => {
         emotion: selectedEmotion,
         message: feelings,
       });
-      console.log("feeling: ", feeling);
     });
+    rewarded.show();
     goBack();
   };
   console.log(feelings, selectedEmotion);
